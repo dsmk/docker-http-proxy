@@ -1,0 +1,39 @@
+# This is a simple Apache config to reverse proxy to a single destination
+#
+RewriteEngine on
+
+ProxyPreserveHost on
+
+RewriteRule ^(.*)              PROXY_DEST/$1 [P]
+
+# now we need to limit access to the CloudFront CIDR blocks plus some management IPs
+#
+<Location / >
+  order deny,allow
+  deny from all
+
+  # CloudFront IPs
+  allow from 52.46.0.0/18
+  allow from 52.84.0.0/15
+  allow from 52.222.128.0/17
+  allow from 54.182.0.0/16
+  allow from 54.192.0.0/16
+  allow from 54.230.0.0/16
+  allow from 54.239.128.0/18
+  allow from 54.239.192.0/19
+  allow from 54.240.128.0/18
+  allow from 204.246.164.0/22
+  allow from 204.246.168.0/22
+  allow from 204.246.174.0/23
+  allow from 204.246.176.0/20
+  allow from 205.251.192.0/19
+  allow from 205.251.249.0/24
+  allow from 205.251.250.0/23
+  allow from 205.251.252.0/23
+  allow from 205.251.254.0/24
+  allow from 216.137.32.0/19
+
+  # local IPs
+  allow from 128.197.0.0/16
+
+</Location>

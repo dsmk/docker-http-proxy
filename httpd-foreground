@@ -1,0 +1,17 @@
+#!/bin/bash
+set -e
+
+# generate the proxy configuration file based on the environment variables passed in:
+# proxy_dest="http://phpbin-test.bu.edu:181"
+# host_header="www-test.bu.edu"
+#
+if [ "x$host_header" != "x" ]; then
+  sed "s#PROXY_DEST#$proxy_dest#g" < /etc/httpd/http-proxy-set.conf.in | \
+    sed "s#HOST_HEADER#$host_header#g" > /etc/httpd/conf.d/http-proxy.conf
+else
+  sed "s#PROXY_DEST#$proxy_dest#g" < /etc/httpd/http-proxy.conf.in > /etc/httpd/conf.d/http-proxy.conf
+fi
+  
+# Apache gets grumpy about PID files pre-existing
+rm -f /usr/local/apache2/logs/httpd.pid
+exec httpd -DFOREGROUND
