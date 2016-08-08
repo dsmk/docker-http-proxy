@@ -12,6 +12,7 @@ proxy_http_host () {
   docker run \
     -d \
     -e proxy_dest="$3" \
+    -e host_header="$host_header" \
     -p "$2:80" \
     --name="$1" \
     "$docker_image"

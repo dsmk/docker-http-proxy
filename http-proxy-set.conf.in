@@ -3,9 +3,11 @@
 RewriteEngine on
 
 # we force the host to be a particular value instead of:
-#ProxyPreserveHost on
+# the following is necessary or Apache will set the Host header internally.
+#
+ProxyPreserveHost on
 
-Header set Host HOST_HEADER
+RequestHeader set Host HOST_HEADER
 
 RewriteRule ^(.*)              PROXY_DEST/$1 [P]
 
